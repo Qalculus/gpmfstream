@@ -1,6 +1,7 @@
 from setuptools import setup, Extension, find_packages
 from setuptools.command.build_ext import build_ext
 import sys
+import subprocess
 import setuptools
 
 __version__ = '0.5'
@@ -81,6 +82,7 @@ class BuildExt(build_ext):
         c_opts['unix'] += ['-stdlib=libc++', '-mmacosx-version-min=10.7']
 
     def build_extensions(self):
+        subprocess.run(['git', 'submodule', 'update', '--init'], check=True, stdout=sys.stdout)
         ct = self.compiler.compiler_type
         opts = self.c_opts.get(ct, [])
         if ct == 'unix':
